@@ -28,7 +28,7 @@
       margin: 0 auto;
     }
 
-    /* TOPO: Avatar, Nome e Bio */
+    /* TOPO */
     .profile-top {
       display: flex;
       justify-content: space-between;
@@ -113,7 +113,7 @@
       background: #e0122d;
     }
 
-    /* ESTRUTURA EM 2 COLUNAS */
+    /* LAYOUT */
     .profile-layout {
       display: flex;
       gap: 30px;
@@ -124,7 +124,7 @@
       flex: 1;
     }
 
-    /* Galeria Grid */
+    /* GALERIA GRID */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -263,7 +263,7 @@
       gap: 6px;
     }
 
-    /* MODAL DE ZOOM */
+    /* MODAL ZOOM */
     .image-zoom-modal {
       display: none;
       position: fixed;
@@ -284,7 +284,7 @@
       text-align: center;
     }
 
-    /* POP-UPS GERAIS */
+    /* POP-UPS */
     .custom-modal {
       display: none;
       position: fixed;
@@ -399,7 +399,7 @@
 
   <div class="main-wrapper">
     
-    <!-- Topo do Perfil -->
+    <!-- Topo -->
     <div class="profile-top">
       <div class="profile-left-side">
         <img src="https://via.placeholder.com/65/222/fff?text=M" alt="Avatar" class="profile-avatar" id="avatarImg" onclick="openZoomModal(this.src, 'image')" title="Clique para ver a foto">
@@ -415,16 +415,16 @@
       <button class="owner-edit-btn" id="editBtn" onclick="openEditProfileModal()">⚙️ Editar Perfil</button>
     </div>
 
-    <!-- Layout em Duas Colunas -->
+    <!-- Layout 2 Colunas -->
     <div class="profile-layout">
       
-      <!-- Coluna Esquerda: Galeria -->
+      <!-- Esquerda: Galeria -->
       <div class="content-left">
         <h2 id="galleryTitle" style="font-size: 16px; color: #c0c8d0; margin-bottom: 10px;">Fotos</h2>
         <div class="gallery-grid" id="galleryGrid"></div>
       </div>
 
-      <!-- Coluna Direita: Sidebar -->
+      <!-- Direita: Sidebar -->
       <div class="sidebar-right">
         <div class="status-text" id="displayStatus">Currently Offline</div>
 
@@ -455,7 +455,7 @@
 
   </div>
 
-  <!-- TELA DE LOGIN SECRETA -->
+  <!-- LOGIN SECRETO -->
   <div class="custom-modal" id="loginModal">
     <div class="modal-box" style="max-width: 320px; text-align: center;">
       <button class="close-btn" onclick="closeLoginModal()">Fechar</button>
@@ -474,7 +474,7 @@
     </div>
   </div>
 
-  <!-- TELA DE ZOOM -->
+  <!-- ZOOM -->
   <div class="image-zoom-modal" id="zoomModal">
     <div class="image-zoom-content">
       <button class="close-btn" onclick="closeZoomModal()" style="top: -35px; right: 0;">Fechar</button>
@@ -482,36 +482,36 @@
     </div>
   </div>
 
-  <!-- PAINEL EDITAR PERFIL -->
+  <!-- EDITAR PERFIL -->
   <div class="custom-modal" id="editProfileModal">
     <div class="modal-box">
       <button class="close-btn" onclick="closeEditProfileModal()">Fechar</button>
       <h3>Editar Perfil</h3>
       <div class="form-group">
         <label>Nome do Perfil:</label>
-        <input type="text" id="editName" value="Manohoraga">
+        <input type="text" id="editName">
       </div>
       <div class="form-group">
         <label>Subtítulo / Bio:</label>
-        <input type="text" id="editBio" value="† 𝔐𝔞𝔫𝔬𝔥𝔬𝔯𝔞𝔤𝔞 †">
+        <input type="text" id="editBio">
       </div>
       <div class="form-group">
         <label>Status:</label>
-        <input type="text" id="editStatus" value="Currently Offline">
+        <input type="text" id="editStatus">
       </div>
       <div class="form-group">
-        <label>Foto de Perfil (Arquivo/URL):</label>
+        <label>Foto de Perfil (Arquivo):</label>
         <input type="file" id="uploadAvatarFile" accept="image/*">
       </div>
       <div class="form-group">
-        <label>Plano de Fundo (Arquivo/URL):</label>
+        <label>Plano de Fundo (Arquivo):</label>
         <input type="file" id="uploadBgFile" accept="image/*">
       </div>
       <button class="action-btn" onclick="saveProfileChanges()">Salvar Alterações</button>
     </div>
   </div>
 
-  <!-- PAINEL POSTAR E GERENCIAR -->
+  <!-- POSTAR E GERENCIAR -->
   <div class="custom-modal" id="postModal">
     <div class="modal-box">
       <button class="close-btn" onclick="closePostModal()">Fechar</button>
@@ -541,12 +541,8 @@
     const MEU_USUARIO = "manohoraga";
     const MINHA_SENHA = "123456789TEAMOKYMIR9685@";
 
-    /* AQUI FICAM AS MÍDIAS PADRÃO DO TEU PAINEL 
-       (Podes colocar links de fotos/vídeos fixos que queres que todos vejam) */
     let mediaData = {
-      'fotos': [
-        { src: 'https://via.placeholder.com/400x300/ff1e38/fff?text=Destaque+1', views: 12, likes: 5 }
-      ],
+      'fotos': [],
       'screenshots': [],
       'videos': [],
       'games': [],
@@ -555,12 +551,45 @@
     
     let currentTab = 'fotos';
 
+    // Carregar dados salvos ao abrir a página
     window.onload = function() {
+      loadFromLocalStorage();
       renderGallery('fotos');
       if (localStorage.getItem('admin_logado') === 'true') {
         mostrarBotoesAdmin();
       }
     };
+
+    function saveToLocalStorage() {
+      localStorage.setItem('painel_mediaData', JSON.stringify(mediaData));
+      localStorage.setItem('painel_name', document.getElementById('displayName').innerText);
+      localStorage.setItem('painel_bio', document.getElementById('displayBio').innerText);
+      localStorage.setItem('painel_status', document.getElementById('displayStatus').innerText);
+      localStorage.setItem('painel_avatar', document.getElementById('avatarImg').src);
+      localStorage.setItem('painel_bg', document.body.style.backgroundImage);
+    }
+
+    function loadFromLocalStorage() {
+      const savedMedia = localStorage.getItem('painel_mediaData');
+      if (savedMedia) {
+        mediaData = JSON.parse(savedMedia);
+      }
+
+      const savedName = localStorage.getItem('painel_name');
+      if (savedName) document.getElementById('displayName').innerText = savedName;
+
+      const savedBio = localStorage.getItem('painel_bio');
+      if (savedBio) document.getElementById('displayBio').innerText = savedBio;
+
+      const savedStatus = localStorage.getItem('painel_status');
+      if (savedStatus) document.getElementById('displayStatus').innerText = savedStatus;
+
+      const savedAvatar = localStorage.getItem('painel_avatar');
+      if (savedAvatar) document.getElementById('avatarImg').src = savedAvatar;
+
+      const savedBg = localStorage.getItem('painel_bg');
+      if (savedBg) document.body.style.backgroundImage = savedBg;
+    }
 
     /* Atalho Secreto: Ctrl + Seta Baixo + Seta Cima */
     let ctrlPressionado = false;
@@ -618,6 +647,7 @@
     function openZoomModal(src, type, categoryIndex) {
       if (categoryIndex !== undefined && mediaData[currentTab][categoryIndex]) {
         mediaData[currentTab][categoryIndex].views += 1;
+        saveToLocalStorage();
         renderGallery(currentTab);
       }
 
@@ -638,10 +668,14 @@
     function likeMedia(category, index, event) {
       event.stopPropagation();
       mediaData[category][index].likes += 1;
+      saveToLocalStorage();
       renderGallery(category);
     }
 
     function openEditProfileModal() {
+      document.getElementById('editName').value = document.getElementById('displayName').innerText;
+      document.getElementById('editBio').value = document.getElementById('displayBio').innerText;
+      document.getElementById('editStatus').value = document.getElementById('displayStatus').innerText;
       document.getElementById('editProfileModal').style.display = 'flex';
     }
 
@@ -660,23 +694,40 @@
       if (newBio) document.getElementById('displayBio').innerText = newBio;
       if (newStatus) document.getElementById('displayStatus').innerText = newStatus;
 
+      let pendentes = 0;
+
       if (avatarFile) {
+        pendentes++;
         const reader = new FileReader();
         reader.onload = function(e) {
           document.getElementById('avatarImg').src = e.target.result;
+          pendentes--;
+          if (pendentes === 0) {
+            saveToLocalStorage();
+            closeEditProfileModal();
+          }
         };
         reader.readAsDataURL(avatarFile);
       }
 
       if (bgFile) {
+        pendentes++;
         const readerBg = new FileReader();
         readerBg.onload = function(e) {
           document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${e.target.result}')`;
+          pendentes--;
+          if (pendentes === 0) {
+            saveToLocalStorage();
+            closeEditProfileModal();
+          }
         };
         readerBg.readAsDataURL(bgFile);
       }
 
-      closeEditProfileModal();
+      if (pendentes === 0) {
+        saveToLocalStorage();
+        closeEditProfileModal();
+      }
     }
 
     function openPostModal() {
@@ -705,6 +756,8 @@
           likes: 0
         });
         
+        saveToLocalStorage();
+
         if (currentTab === category) {
           renderGallery(currentTab);
         }
@@ -741,6 +794,7 @@
 
     function deleteMedia(category, index) {
       mediaData[category].splice(index, 1);
+      saveToLocalStorage();
       renderDeleteList();
       renderGallery(currentTab);
     }
