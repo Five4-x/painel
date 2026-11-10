@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manohoraga - Profile</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 30px 20px;
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x1080/111/fff?text=Fundo+Personalizado');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .main-wrapper {
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    /* TOPO: Avatar, Nome e Bio */
+    .profile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .profile-left-side {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid #444;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .profile-avatar:hover {
+      transform: scale(1.05);
+      border-color: #ff1e38;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .verified-badge {
+      width: 18px;
+      height: 18px;
+      background-color: #0095f6;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .profile-bio {
+      font-size: 13px;
+      color: #bbb;
+      letter-spacing: 1px;
+    }
+
+    .owner-edit-btn {
+      display: none;
+      background: #ff1e38;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .owner-edit-btn:hover {
+      background: #e0122d;
+    }
+
+    /* ESTRUTURA EM 2 COLUNAS */
+    .profile-layout {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .content-left {
+      flex: 1;
+    }
+
+    /* Galeria Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+      margin-top: 15px;
+    }
+
+    .gallery-card {
+      background: #111;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      border-color: #ff1e38;
+    }
+
+    .gallery-media {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+    }
+
+    .gallery-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: #161616;
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .like-btn {
+      background: none;
+      border: none;
+      color: #ff1e38;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* COLUNA DIREITA */
+    .sidebar-right {
+      width: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .status-text {
+      color: #c0c8d0;
+      font-size: 15px;
+    }
+
+    .badges-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .badges-header {
+      font-size: 14px;
+      color: #c0c8d0;
+    }
+
+    .badges-header span {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .badges-icons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(17, 17, 17, 0.85);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-item {
+      color: #eaeaea;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.2s;
+      display: block;
+    }
+
+    .nav-item:hover {
+      color: #0095f6;
+    }
+
+    .sidebar-post-btn {
+      display: none;
+      background: #0095f6;
+      color: #ffffff;
+      border: none;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* MODAL DE ZOOM */
+    .image-zoom-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+    }
+
+    .image-zoom-content {
+      position: relative;
+      max-width: 650px;
+      width: 90%;
+      text-align: center;
+    }
+
+    /* POP-UPS GERAIS */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: #111;
+      border: 1px solid #333;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 450px;
+      width: 100%;
+      color: #fff;
+      position: relative;
+    }
+
+    .modal-box h3 {
+      font-size: 17px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #222;
+      padding-bottom: 6px;
+      color: #ff1e38;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .form-group input, .form-group select {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .action-btn {
+      background: #ff1e38;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    .delete-list {
+      max-height: 140px;
+      overflow-y: auto;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 8px;
+      margin-top: 10px;
+    }
+
+    .delete-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #262626;
+      font-size: 12px;
+    }
+
+    .btn-del {
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-wrapper">
+    
+    <!-- Topo do Perfil -->
+    <div class="profile-top">
+      <div class="profile-left-side">
+        <img src="https://via.placeholder.com/65/222/fff?text=M" alt="Avatar" class="profile-avatar" id="avatarImg" onclick="openZoomModal(this.src, 'image')" title="Clique para ver a foto">
+        <div class="profile-info">
+          <div class="name-row">
+            <h1 class="profile-name" id="displayName">Manohoraga</h1>
+            <div class="verified-badge" title="Verificado">✓</div>
+          </div>
+          <div class="profile-bio" id="displayBio">† 𝔐𝔞𝔫𝔬𝔥𝔬𝔯𝔞𝔤𝔞 †</div>
+        </div>
+      </div>
+
+      <button class="owner-edit-btn" id="editBtn" onclick="openEditProfileModal()">⚙️ Editar Perfil</button>
+    </div>
+
+    <!-- Layout em Duas Colunas -->
+    <div class="profile-layout">
+      
+      <!-- Coluna Esquerda: Galeria -->
+      <div class="content-left">
+        <h2 id="galleryTitle" style="font-size: 16px; color: #c0c8d0; margin-bottom: 10px;">Fotos</h2>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+
+      <!-- Coluna Direita: Sidebar -->
+      <div class="sidebar-right">
+        <div class="status-text" id="displayStatus">Currently Offline</div>
+
+        <div class="badges-block">
+          <div class="badges-header">Badges <span id="displayBadges">53</span></div>
+          <div class="badges-icons">
+            <div class="badge-icon">💀</div>
+            <div class="badge-icon">⚔️</div>
+            <div class="badge-icon">👑</div>
+            <div class="badge-icon">🐉</div>
+          </div>
+        </div>
+
+        <div class="nav-links">
+          <a class="nav-item" onclick="switchTab('games', 'Games')">Games</a>
+          <a class="nav-item" onclick="switchTab('inventory', 'Inventory')">Inventory</a>
+          <a class="nav-item" onclick="switchTab('screenshots', 'Screenshots')">Screenshots</a>
+          <a class="nav-item" onclick="switchTab('videos', 'Videos')">Videos</a>
+          <a class="nav-item" onclick="switchTab('fotos', 'Fotos')">Fotos</a>
+          
+          <button class="sidebar-post-btn" id="postBtn" onclick="openPostModal()">
+            <span>➕</span> Postar
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TELA DE LOGIN SECRETA -->
+  <div class="custom-modal" id="loginModal">
+    <div class="modal-box" style="max-width: 320px; text-align: center;">
+      <button class="close-btn" onclick="closeLoginModal()">Fechar</button>
+      <h3>🔒 Área Restrita</h3>
+      <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Acesso do Administrador</p>
+      <div class="form-group" style="text-align: left;">
+        <label>Utilizador:</label>
+        <input type="text" id="adminUser" placeholder="Utilizador">
+      </div>
+      <div class="form-group" style="text-align: left;">
+        <label>Palavra-passe:</label>
+        <input type="password" id="adminPass" placeholder="Senha">
+      </div>
+      <button class="action-btn" onclick="verificarLoginAdmin()">Entrar no Painel</button>
+      <p id="loginErro" style="color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none;">Dados incorretos!</p>
+    </div>
+  </div>
+
+  <!-- TELA DE ZOOM -->
+  <div class="image-zoom-modal" id="zoomModal">
+    <div class="image-zoom-content">
+      <button class="close-btn" onclick="closeZoomModal()" style="top: -35px; right: 0;">Fechar</button>
+      <div id="zoomContainer"></div>
+    </div>
+  </div>
+
+  <!-- PAINEL EDITAR PERFIL -->
+  <div class="custom-modal" id="editProfileModal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeEditProfileModal()">Fechar</button>
+      <h3>Editar Perfil</h3>
+      <div class="form-group">
+        <label>Nome do Perfil:</label>
+        <input type="text" id="editName" value="Manohoraga">
+      </div>
+      <div class="form-group">
+        <label>Subtítulo / Bio:</label>
+        <input type="text" id="editBio" value="† 𝔐𝔞𝔫𝔬𝔥𝔬𝔯𝔞𝔤𝔞 †">
+      </div>
+      <div class="form-group">
+        <label>Status:</label>
+        <input type="text" id="editStatus" value="Currently Offline">
+      </div>
+      <div class="form-group">
+        <label>Foto de Perfil (Arquivo/URL):</label>
+        <input type="file" id="uploadAvatarFile" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label>Plano de Fundo (Arquivo/URL):</label>
+        <input type="file" id="uploadBgFile" accept="image/*">
+      </div>
+      <button class="action-btn" onclick="saveProfileChanges()">Salvar Alterações</button>
+    </div>
+  </div>
+
+  <!-- PAINEL POSTAR E GERENCIAR -->
+  <div class="custom-modal" id="postModal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closePostModal()">Fechar</button>
+      <h3>Adicionar Mídia ao Painel</h3>
+      <div class="form-group">
+        <label>Selecionar Foto/Vídeo do PC:</label>
+        <input type="file" id="uploadMediaFile" accept="image/*,video/*">
+      </div>
+      <div class="form-group">
+        <label>Categoria:</label>
+        <select id="mediaCategory">
+          <option value="fotos">Fotos</option>
+          <option value="screenshots">Screenshots</option>
+          <option value="videos">Videos</option>
+          <option value="games">Games</option>
+          <option value="inventory">Inventory</option>
+        </select>
+      </div>
+      <button class="action-btn" style="background: #0095f6;" onclick="postNewMedia()">Adicionar</button>
+
+      <h3 style="margin-top: 20px;">Gerenciar Mídias</h3>
+      <div class="delete-list" id="deleteListContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const MEU_USUARIO = "manohoraga";
+    const MINHA_SENHA = "123456789TEAMOKYMIR9685@";
+
+    /* AQUI FICAM AS MÍDIAS PADRÃO DO TEU PAINEL 
+       (Podes colocar links de fotos/vídeos fixos que queres que todos vejam) */
+    let mediaData = {
+      'fotos': [
+        { src: 'https://via.placeholder.com/400x300/ff1e38/fff?text=Destaque+1', views: 12, likes: 5 }
+      ],
+      'screenshots': [],
+      'videos': [],
+      'games': [],
+      'inventory': []
+    };
+    
+    let currentTab = 'fotos';
+
+    window.onload = function() {
+      renderGallery('fotos');
+      if (localStorage.getItem('admin_logado') === 'true') {
+        mostrarBotoesAdmin();
+      }
+    };
+
+    /* Atalho Secreto: Ctrl + Seta Baixo + Seta Cima */
+    let ctrlPressionado = false;
+    let setaBaixoPressionada = false;
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Control') ctrlPressionado = true;
+      if (e.key === 'ArrowDown') setaBaixoPressionada = true;
+
+      if (ctrlPressionado && setaBaixoPressionada && e.key === 'ArrowUp') {
+        e.preventDefault();
+        abrirPainelLoginSecreto();
+      }
+    });
+
+    window.addEventListener('keyup', function(e) {
+      if (e.key === 'Control') ctrlPressionado = false;
+      if (e.key === 'ArrowDown') setaBaixoPressionada = false;
+    });
+
+    function abrirPainelLoginSecreto() {
+      if (localStorage.getItem('admin_logado') === 'true') {
+        alert("Já estás logado! Os botões de administração estão visíveis.");
+      } else {
+        document.getElementById('loginErro').style.display = 'none';
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+        document.getElementById('loginModal').style.display = 'flex';
+      }
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function verificarLoginAdmin() {
+      const u = document.getElementById('adminUser').value;
+      const p = document.getElementById('adminPass').value;
+
+      if (u === MEU_USUARIO && p === MINHA_SENHA) {
+        localStorage.setItem('admin_logado', 'true');
+        closeLoginModal();
+        mostrarBotoesAdmin();
+        alert("Login efetuado com sucesso!");
+      } else {
+        document.getElementById('loginErro').style.display = 'block';
+      }
+    }
+
+    function mostrarBotoesAdmin() {
+      document.getElementById('editBtn').style.display = 'block';
+      document.getElementById('postBtn').style.display = 'flex';
+    }
+
+    function openZoomModal(src, type, categoryIndex) {
+      if (categoryIndex !== undefined && mediaData[currentTab][categoryIndex]) {
+        mediaData[currentTab][categoryIndex].views += 1;
+        renderGallery(currentTab);
+      }
+
+      const container = document.getElementById('zoomContainer');
+      if (type === 'video') {
+        container.innerHTML = `<video src="${src}" controls autoplay style="width:100%; max-height:80vh; border-radius:8px;"></video>`;
+      } else {
+        container.innerHTML = `<img src="${src}" alt="Mídia" style="width:100%; max-height:80vh; object-fit:contain; border-radius:8px; border:1px solid #333;">`;
+      }
+      document.getElementById('zoomModal').style.display = 'flex';
+    }
+
+    function closeZoomModal() {
+      document.getElementById('zoomModal').style.display = 'none';
+      document.getElementById('zoomContainer').innerHTML = '';
+    }
+
+    function likeMedia(category, index, event) {
+      event.stopPropagation();
+      mediaData[category][index].likes += 1;
+      renderGallery(category);
+    }
+
+    function openEditProfileModal() {
+      document.getElementById('editProfileModal').style.display = 'flex';
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').style.display = 'none';
+    }
+
+    function saveProfileChanges() {
+      const newName = document.getElementById('editName').value;
+      const newBio = document.getElementById('editBio').value;
+      const newStatus = document.getElementById('editStatus').value;
+      const avatarFile = document.getElementById('uploadAvatarFile').files[0];
+      const bgFile = document.getElementById('uploadBgFile').files[0];
+
+      if (newName) document.getElementById('displayName').innerText = newName;
+      if (newBio) document.getElementById('displayBio').innerText = newBio;
+      if (newStatus) document.getElementById('displayStatus').innerText = newStatus;
+
+      if (avatarFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('avatarImg').src = e.target.result;
+        };
+        reader.readAsDataURL(avatarFile);
+      }
+
+      if (bgFile) {
+        const readerBg = new FileReader();
+        readerBg.onload = function(e) {
+          document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${e.target.result}')`;
+        };
+        readerBg.readAsDataURL(bgFile);
+      }
+
+      closeEditProfileModal();
+    }
+
+    function openPostModal() {
+      renderDeleteList();
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closePostModal() {
+      document.getElementById('postModal').style.display = 'none';
+    }
+
+    function postNewMedia() {
+      const mediaFile = document.getElementById('uploadMediaFile').files[0];
+      const category = document.getElementById('mediaCategory').value;
+
+      if (!mediaFile) {
+        alert("Por favor, selecione uma foto ou vídeo!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        mediaData[category].push({
+          src: e.target.result,
+          views: 0,
+          likes: 0
+        });
+        
+        if (currentTab === category) {
+          renderGallery(currentTab);
+        }
+
+        alert("Mídia adicionada com sucesso!");
+        document.getElementById('uploadMediaFile').value = '';
+        renderDeleteList();
+        closePostModal();
+      };
+      reader.readAsDataURL(mediaFile);
+    }
+
+    function renderDeleteList() {
+      const container = document.getElementById('deleteListContainer');
+      container.innerHTML = '';
+      
+      let count = 0;
+      for (let cat in mediaData) {
+        mediaData[cat].forEach((item, index) => {
+          count++;
+          container.innerHTML += `
+            <div class="delete-item">
+              <span>Item #${count} (${cat})</span>
+              <button class="btn-del" onclick="deleteMedia('${cat}', ${index})">Excluir</button>
+            </div>
+          `;
+        });
+      }
+      
+      if (count === 0) {
+        container.innerHTML = `<span style="font-size:11px; color:#777;">Nenhuma mídia para gerenciar.</span>`;
+      }
+    }
+
+    function deleteMedia(category, index) {
+      mediaData[category].splice(index, 1);
+      renderDeleteList();
+      renderGallery(currentTab);
+    }
+
+    function switchTab(tabKey, tabName) {
+      currentTab = tabKey;
+      document.getElementById('galleryTitle').innerText = tabName;
+      renderGallery(tabKey);
+    }
+
+    function renderGallery(type) {
+      const grid = document.getElementById('galleryGrid');
+      const items = mediaData[type];
+
+      if (!items || items.length === 0) {
+        grid.innerHTML = `<p style="color: #888; font-size: 13px; grid-column: 1/-1;">Nenhum item nesta seção ainda.</p>`;
+        return;
+      }
+
+      grid.innerHTML = '';
+      items.forEach((item, index) => {
+        const isVideo = item.src.startsWith('data:video');
+        const mediaHtml = isVideo 
+          ? `<video src="${item.src}" class="gallery-media" onclick="openZoomModal(this.src, 'video', ${index})"></video>`
+          : `<img src="${item.src}" class="gallery-media" onclick="openZoomModal(this.src, 'image', ${index})" alt="Mídia">`;
+
+        grid.innerHTML += `
+          <div class="gallery-card">
+            ${mediaHtml}
+            <div class="gallery-stats">
+              <div class="stat-item" title="Visualizações">
+                👁️ <span>${item.views}</span>
+              </div>
+              <button class="like-btn" onclick="likeMedia('${type}', ${index}, event)" title="Curtir">
+                ❤️ <span>${item.likes}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+  </script>
+
+</body>
+</html>
