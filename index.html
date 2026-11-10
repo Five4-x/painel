@@ -96,6 +96,7 @@
       letter-spacing: 1px;
     }
 
+    /* ESCONDIDO POR PADRÃO PARA VISITANTES */
     .owner-edit-btn {
       display: none;
       background: #ff1e38;
@@ -247,6 +248,7 @@
       color: #0095f6;
     }
 
+    /* ESCONDIDO POR PADRÃO PARA VISITANTES */
     .sidebar-post-btn {
       display: none;
       background: #0095f6;
@@ -551,10 +553,11 @@
     
     let currentTab = 'fotos';
 
-    // Carregar dados salvos ao abrir a página
     window.onload = function() {
       loadFromLocalStorage();
       renderGallery('fotos');
+      
+      // Verifica se já estava logado antes
       if (localStorage.getItem('admin_logado') === 'true') {
         mostrarBotoesAdmin();
       }
@@ -612,7 +615,7 @@
 
     function abrirPainelLoginSecreto() {
       if (localStorage.getItem('admin_logado') === 'true') {
-        alert("Já estás logado! Os botões de administração estão visíveis.");
+        alert("Já estás logado com permissão de administrador!");
       } else {
         document.getElementById('loginErro').style.display = 'none';
         document.getElementById('adminUser').value = '';
@@ -633,7 +636,7 @@
         localStorage.setItem('admin_logado', 'true');
         closeLoginModal();
         mostrarBotoesAdmin();
-        alert("Login efetuado com sucesso!");
+        alert("Login efetuado com sucesso! Painel de controle liberado.");
       } else {
         document.getElementById('loginErro').style.display = 'block';
       }
@@ -815,6 +818,7 @@
       }
 
       grid.innerHTML = '';
+      items.items = items;
       items.forEach((item, index) => {
         const isVideo = item.src.startsWith('data:video');
         const mediaHtml = isVideo 
